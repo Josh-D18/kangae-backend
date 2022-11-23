@@ -1,6 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const users = require("./src/Routes/userRoutes");
+const users = require("./src/Routes/UserRoutes/userRoutes");
 const connectToMongo = require("./src/Connect/connect");
 
 dotenv.config();

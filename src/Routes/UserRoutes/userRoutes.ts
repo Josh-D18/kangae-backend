@@ -1,6 +1,6 @@
 const apps = require("express");
 const router = apps.Router();
-import { User } from "../Models/Users/users";
+import { User } from "../../Models/Users/users";
 
 router.get("/", async (req: Request, res: Response | any) => {
   const user = new User({
@@ -8,6 +8,7 @@ router.get("/", async (req: Request, res: Response | any) => {
     password: "1234",
     firstName: "Josh",
     lastName: "Date",
+    online: false,
     bio: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
     molestiae quas vel sint commodi repudiandae consequuntur voluptatum laborum
     numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga praesentium
