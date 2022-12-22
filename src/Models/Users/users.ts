@@ -12,6 +12,7 @@ interface IUser {
   ideas: [{ ideaID: Types.ObjectId }];
   friends: [{ userID: Types.ObjectId }];
   comments: [{ commentID: Types.ObjectId }];
+  requests: [{ commentID: Types.ObjectId }];
 }
 
 const userSchema = new Schema<IUser>({
@@ -24,6 +25,7 @@ const userSchema = new Schema<IUser>({
   ideas: [{ type: Schema.Types.ObjectId, ref: "Idea" }],
   friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+  requests: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 export const User = mongoose.model("User", userSchema);

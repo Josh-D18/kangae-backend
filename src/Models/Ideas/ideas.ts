@@ -8,6 +8,7 @@ interface IIdea {
   category: string;
   description: string;
   likes: number;
+  comments: [{ commentID: Types.ObjectId }];
 }
 
 const ideaSchema = new Schema<IIdea>({
@@ -15,6 +16,7 @@ const ideaSchema = new Schema<IIdea>({
   idea: { type: String, required: true },
   category: { type: String, required: true },
   description: { type: String, required: true },
+  comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   likes: { type: Number },
 });
 
