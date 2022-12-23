@@ -8,8 +8,8 @@ const router = expressCommentRouter.Router();
 // Get Comments
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const comment = Comment.find({});
-    res.json({ comment });
+    const comments = await Comment.find({});
+    res.json({ comments });
   } catch (error) {
     res.json({ error });
   }
@@ -18,7 +18,7 @@ router.get("/", async (req: Request, res: Response) => {
 // Get Comment
 router.get("/single", async (req: Request, res: Response) => {
   try {
-    const comment = Comment.find({ _id: req.body.id });
+    const comment = await Comment.find({ _id: req.body.id });
     res.json({ comment });
   } catch (error) {
     res.json({ error });
@@ -27,8 +27,8 @@ router.get("/single", async (req: Request, res: Response) => {
 
 // Create Comment
 router.post("/", async (req: Request, res: Response) => {
-  const user = await User.findById({ _id: req.body.id });
   try {
+    const user = await User.findById({ _id: req.body.id });
     const comment = new Comment({
       username: user,
       comment: req.body.comment,
