@@ -1,9 +1,10 @@
 const express = require("express");
 import { Request, Response } from "express";
-const router = express.Router();
-import { User } from "../../Models/Users/users";
 import { Comment } from "../../Models/Comments/comments";
 import { Reply } from "../../Models/Replies/Replies";
+import { User } from "../../Models/Users/users";
+const router = express.Router();
+const auth = require("../../Auth/auth");
 
 // Get Replies
 router.get("/", async (req: Request, res: Response) => {
@@ -16,10 +17,17 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 // Get Reply
+router.get("/single", async (req: Request, res: Response) => {
+  try {
+    const reply = await Reply.findById({ _id: req.body.id });
+    res.json({ reply });
+  } catch (error) {
+    res.json(error);
+  }
+});
 
 // Create Reply
-
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findById({ _id: req.body.id });
     const comment = await Comment.findById({ _id: req.body.commentID });

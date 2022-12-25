@@ -2,6 +2,7 @@ const express = require("express");
 import { Request, Response } from "express";
 const router = express.Router();
 import { User } from "../../Models/Users/users";
+const auth = require("../../Auth/auth");
 
 // Get Users
 router.get("/", async (req: Request, res: Response) => {
@@ -19,23 +20,23 @@ router.get("/user", async (req: Request, res: Response) => {
     const user = await User.findById({ _id: req.body.id });
     res.json(user);
   } catch (error) {
-    res.json({ error });
+    res.status(400).json({ error });
   }
 });
 
 // Get Friends List
-router.get("/list", async (req: Request, res: Response) => {
+router.get("/list", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findById({ _id: req.body.id });
     const userList = user!.friends;
     res.json(userList);
   } catch (error) {
-    res.json(error);
+    res.status(400).json(error);
   }
 });
 
 // Add to friends list
-router.put("/addfriend", async (req: Request, res: Response) => {
+router.put("/addfriend", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findById({ _id: req.body.id });
     const userList = user?.friends;
@@ -59,7 +60,7 @@ router.put("/addfriend", async (req: Request, res: Response) => {
         },
         { new: true }
       );
-      res.json({ updateFriendList, updateFriendListSender });
+      res.status(201).json({ updateFriendList, updateFriendListSender });
     }
   } catch (error) {
     res.json(error);
@@ -67,7 +68,7 @@ router.put("/addfriend", async (req: Request, res: Response) => {
 });
 
 // Add user to requests list
-router.put("/friendrequest", async (req: Request, res: Response) => {
+router.put("/friendrequest", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findById({ _id: req.body.friendID });
     const userList = user?.requests;
@@ -95,31 +96,35 @@ router.put("/friendrequest", async (req: Request, res: Response) => {
 });
 
 // Remove user from requests list
-router.put("/deletefriendrequest", async (req: Request, res: Response) => {
-  try {
-    const user = await User.findById({ _id: req.body.friendID });
-    const userList = user?.requests;
+router.put(
+  "/deletefriendrequest",
+  auth,
+  async (req: Request, res: Response) => {
+    try {
+      const user = await User.findById({ _id: req.body.friendID });
+      const userList = user?.requests;
 
-    if (!userList?.includes(req.body.id)) {
-      res.json({ Error: "Request has already been removed!" });
-      return;
-    } else {
-      const updateFriendList = await User.findByIdAndUpdate(
-        { _id: req.body.friendID },
-        {
-          $pull: { requests: req.body.id },
-        }
-      );
+      if (!userList?.includes(req.body.id)) {
+        res.json({ Error: "Request has already been removed!" });
+        return;
+      } else {
+        const updateFriendList = await User.findByIdAndUpdate(
+          { _id: req.body.friendID },
+          {
+            $pull: { requests: req.body.id },
+          }
+        );
 
-      res.json({ updateFriendList });
+        res.json({ updateFriendList });
+      }
+    } catch (error) {
+      res.json(error);
     }
-  } catch (error) {
-    res.json(error);
   }
-});
+);
 
 // Delete user from friends list
-router.put("/deletefriend", async (req: Request, res: Response) => {
+router.put("/deletefriend", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findById({ _id: req.body.id });
     const userList = user?.friends;
@@ -145,25 +150,6 @@ router.put("/deletefriend", async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.json(error);
-  }
-});
-
-// Create User
-router.post("/", async (req: Request, res: Response) => {
-  try {
-    const user = new User({
-      username: req.body.username,
-      password: req.body.password,
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      online: false,
-      bio: req.body.bio,
-    });
-    await user.save();
-
-    res.json(user);
-  } catch (error) {
-    res.json({ error: error });
   }
 });
 

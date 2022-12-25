@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { Idea } from "../../Models/Ideas/ideas";
 import { User } from "../../Models/Users/users";
 const router = expressIdeaRouter.Router();
+const auth = require("../../Auth/auth");
 
 // Get Ideas
 router.get("/", async (req: Request, res: Response) => {
@@ -25,7 +26,7 @@ router.get("/single", async (req: Request, res: Response) => {
 });
 
 // Create Idea
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ username: req.body.username });
     const idea = new Idea({
@@ -51,7 +52,7 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 // Delete Idea
-router.delete("/", async (req: Request, res: Response) => {
+router.delete("/", auth, async (req: Request, res: Response) => {
   try {
     const idea = await Idea.findByIdAndDelete({ _id: req.body.id });
     res.json(idea);
@@ -62,7 +63,7 @@ router.delete("/", async (req: Request, res: Response) => {
 
 // Edit Idea
 
-router.put("/edit", async (req: Request, res: Response) => {
+router.put("/edit", auth, async (req: Request, res: Response) => {
   try {
     const updateIdea = await Idea.findOneAndUpdate(
       { _id: req.body.id },
