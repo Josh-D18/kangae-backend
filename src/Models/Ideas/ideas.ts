@@ -7,7 +7,7 @@ interface IIdea {
   idea: string;
   category: string;
   description: string;
-  likes: number;
+  likes: [{ userID: Types.ObjectId }];
   comments: [{ commentID: Types.ObjectId }];
 }
 
@@ -17,7 +17,7 @@ const ideaSchema = new Schema<IIdea>({
   category: { type: String, required: true },
   description: { type: String, required: true },
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
-  likes: { type: Number },
+  likes: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
 export const Idea = mongoose.model("Idea", ideaSchema);

@@ -39,7 +39,6 @@ router.post("/", auth, async (req: Request, res: Response) => {
       idea: req.body.idea,
       description: req.body.description,
       category: req.body.category,
-      likes: 0,
     });
     await idea.save();
     const updateUser = await User.findOneAndUpdate(
@@ -83,6 +82,45 @@ router.put("/edit", auth, async (req: Request, res: Response) => {
     res.json(updateIdea);
   } catch (error) {
     res.send(error);
+  }
+});
+
+// Like an idea
+router.put("/like", auth, async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById({ _id: req.body.id });
+
+    const updateIdeaLikes = await Idea.findOneAndUpdate(
+      { _id: req.body.ideaID },
+      {
+        $push: { likes: user?._id },
+      },
+      { new: true }
+    );
+
+    await updateIdeaLikes?.save();
+    res.json(updateIdeaLikes);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
+});
+
+// Unlike an idea
+router.put("/unlike", auth, async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById({ _id: req.body.id });
+    const updateIdeaLikes = await Idea.findOneAndUpdate(
+      { _id: req.body.ideaID },
+      {
+        $pull: { likes: user?._id },
+      },
+      { new: true }
+    );
+
+    await updateIdeaLikes?.save();
+    res.json(updateIdeaLikes);
+  } catch (error) {
+    res.status(400).json({ error });
   }
 });
 
