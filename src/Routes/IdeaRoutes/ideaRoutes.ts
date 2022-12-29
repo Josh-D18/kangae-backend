@@ -29,6 +29,11 @@ router.get("/single", async (req: Request, res: Response) => {
 router.post("/", auth, async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ username: req.body.username });
+    const ideaCheck = await Idea.findOne({ idea: req.body.idea });
+    if (ideaCheck?.idea.toLowerCase() === req.body.idea.toLowerCase()) {
+      res.status(401).json({ ERROR: "Idea has already been created" });
+      return;
+    }
     const idea = new Idea({
       username: user,
       idea: req.body.idea,

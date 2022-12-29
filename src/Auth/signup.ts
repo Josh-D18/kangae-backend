@@ -9,6 +9,13 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     let username = await req.body.username;
     let password = await req.body.password;
+    let user = await User.findOne({ username });
+
+    if (user?.username.toLowerCase() === username.toLowerCase()) {
+      res.status(400).json({ ERROR: "Username is already taken" });
+      return;
+    }
+
     if (
       username === "" ||
       password === "" ||
