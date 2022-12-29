@@ -8,11 +8,13 @@ const signup = require("./src/Auth/signup");
 const login = require("./src/Auth/login");
 const connectToMongo = require("./src/Connect/connect");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT;
 
+app.use(cors());
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 

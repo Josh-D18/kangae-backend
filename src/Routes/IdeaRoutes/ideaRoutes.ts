@@ -11,7 +11,7 @@ router.get("/", async (req: Request, res: Response) => {
     const idea = await Idea.find();
     res.json(idea);
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -21,7 +21,7 @@ router.get("/single", async (req: Request, res: Response) => {
     const idea = await Idea.findById({ _id: req.body.id });
     res.json(idea);
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -51,7 +51,7 @@ router.post("/", auth, async (req: Request, res: Response) => {
     await updateUser?.save();
     res.json(idea);
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -61,7 +61,7 @@ router.delete("/", auth, async (req: Request, res: Response) => {
     const idea = await Idea.findByIdAndDelete({ _id: req.body.id });
     res.json(idea);
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -81,7 +81,7 @@ router.put("/edit", auth, async (req: Request, res: Response) => {
     await updateIdea?.save();
     res.json(updateIdea);
   } catch (error) {
-    res.send(error);
+    res.status(400).json({ error });
   }
 });
 

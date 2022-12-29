@@ -10,7 +10,7 @@ router.get("/", async (req: Request, res: Response) => {
     const users = await User.find({});
     res.json(users);
   } catch (error) {
-    res.json({ error: error });
+    res.status(400).json({ error });
   }
 });
 
@@ -31,7 +31,7 @@ router.get("/list", auth, async (req: Request, res: Response) => {
     const userList = user!.friends;
     res.json(userList);
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -63,7 +63,7 @@ router.put("/addfriend", auth, async (req: Request, res: Response) => {
       res.status(201).json({ updateFriendList, updateFriendListSender });
     }
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -91,7 +91,7 @@ router.put("/friendrequest", auth, async (req: Request, res: Response) => {
       res.json({ updateFriendRequestList });
     }
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
@@ -118,7 +118,7 @@ router.put(
         res.json({ updateFriendList });
       }
     } catch (error) {
-      res.json(error);
+      res.status(400).json({ error });
     }
   }
 );
@@ -149,7 +149,7 @@ router.put("/deletefriend", auth, async (req: Request, res: Response) => {
       res.json({ updateFriendList, updateFriendListSender });
     }
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 

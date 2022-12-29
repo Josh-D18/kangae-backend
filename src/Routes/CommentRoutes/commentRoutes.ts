@@ -12,7 +12,7 @@ router.get("/", async (req: Request, res: Response) => {
     const comments = await Comment.find({});
     res.json({ comments });
   } catch (error) {
-    res.json({ error });
+    res.status(400).json({ error });
   }
 });
 
@@ -22,7 +22,7 @@ router.get("/single", async (req: Request, res: Response) => {
     const comment = await Comment.find({ _id: req.body.id });
     res.json({ comment });
   } catch (error) {
-    res.json({ error });
+    res.status(400).json({ error });
   }
 });
 
@@ -49,7 +49,7 @@ router.post("/", auth, async (req: Request, res: Response) => {
     await comment.save();
     res.json({ comment, updateUserCommentList, updateIdeaCommentList });
   } catch (error) {
-    res.json(error);
+    res.status(400).json({ error });
   }
 });
 
