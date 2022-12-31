@@ -153,4 +153,8 @@ router.put("/deletefriend", auth, async (req: Request, res: Response) => {
   }
 });
 
+// Update profile images
+
+router.post("/upload", auth);
+
 module.exports = router;

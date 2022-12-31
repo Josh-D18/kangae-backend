@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+// const img = fs.readFileSync(require("../Images/profile-img.jpg"));
+// const profileIMG = img;
 import { Request, Response } from "express";
 import { User } from "../Models/Users/users";
+
 // Signup
 router.post("/", async (req: Request, res: Response) => {
   try {
@@ -33,6 +37,7 @@ router.post("/", async (req: Request, res: Response) => {
         lastName: req.body.lastName,
         online: false,
         bio: req.body.bio,
+        // profileImg: profileIMG,
       });
       const token = await jwt.sign(
         { username: user.username, password: user.password },

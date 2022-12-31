@@ -9,6 +9,8 @@ const login = require("./src/Auth/login");
 const connectToMongo = require("./src/Connect/connect");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const multer = require("multer");
+const { GridFsStorage } = require("multer-gridfs-storage");
 dotenv.config();
 
 const app = express();

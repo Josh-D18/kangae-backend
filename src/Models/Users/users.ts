@@ -9,6 +9,7 @@ interface IUser {
   lastName: string;
   bio: string;
   online: boolean;
+  profileImg: { types: Types.ObjectId; ref: "Image" };
   ideas: [{ ideaID: Types.ObjectId }];
   friends: [{ userID: Types.ObjectId }];
   comments: [{ commentID: Types.ObjectId }];
@@ -22,6 +23,7 @@ const userSchema = new Schema<IUser>({
   lastName: { type: String, required: true },
   bio: { type: String, required: true, minlength: 10, maxlength: 500 },
   online: { type: Boolean },
+  profileImg: { type: String },
   ideas: [{ type: Schema.Types.ObjectId, ref: "Idea" }],
   friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
